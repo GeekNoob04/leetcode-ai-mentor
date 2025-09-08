@@ -117,9 +117,9 @@ export const NEXT_AUTH: AuthOptions = {
             return session;
         },
 
-        async redirect({ url, baseUrl }) {
-            if (url.startsWith(baseUrl)) return url;
-            return `${baseUrl}/dashboard`;
+        async redirect({ baseUrl }) {
+            // if (url.startsWith(baseUrl)) return url;
+            return `${baseUrl}/link`;
         },
     },
 
