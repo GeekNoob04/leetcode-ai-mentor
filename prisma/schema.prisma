@@ -13,34 +13,35 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model User {
-  id                String           @id @default(cuid())
-  name              String?
-  email             String?          @unique
-  password          String?
-  emailVerfied      DateTime?
-  image             String?
-  accounts          Account[]
-  sessions          Session[]
-  leetcodeUsername  String?          @unique
-  statsHistory      StatsHistory[]
-  leetcodeStats     LeetcodeStats?   @relation("LeetcodeStatsToUser")
+  id               String         @id @default(cuid())
+  name             String?
+  email            String?        @unique
+  password         String?
+  emailVerfied     DateTime?
+  image            String?
+  accounts         Account[]
+  sessions         Session[]
+  leetcodeUsername String?        @unique
+  statsHistory     StatsHistory[]
+  leetcodeStats    LeetcodeStats? @relation("LeetcodeStatsToUser")
 }
 
 model Account {
-  id String @id @default(cuid())
-  userId String
-  type String
-  provider String
-  providerAccountId String
-  refresh_token String?
-  access_token String?
-  expires_at Int?
-  token_type String?
-  scope String?
-  id_token String?
-  session_state String?
-  refresh_token_expires_in Int? 
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?
+  access_token             String?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?
+  session_state            String?
+  refresh_token_expires_in Int?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -48,10 +49,10 @@ model Account {
 }
 
 model Session {
-  id String @id @default(cuid())
-  sessionToken String @unique
-  userId String
-  expires DateTime
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -65,24 +66,24 @@ model VerificationToken {
 }
 
 model StatsHistory {
-  id          String   @id @default(cuid())
-  userId      String
-  totalSolved Int
-  easySolved  Int
+  id           String   @id @default(cuid())
+  userId       String
+  totalSolved  Int
+  easySolved   Int
   mediumSolved Int
-  hardSolved  Int
-  ranking     Int?
-  fetchedAt   DateTime @default(now())
+  hardSolved   Int
+  ranking      Int?
+  fetchedAt    DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model LeetcodeStats {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  statsJson   Json
-  updatedAt   DateTime @updatedAt
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  statsJson Json
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
 
-  user        User     @relation("LeetcodeStatsToUser", fields: [userId], references: [id])
+  user User @relation("LeetcodeStatsToUser", fields: [userId], references: [id])
 }
