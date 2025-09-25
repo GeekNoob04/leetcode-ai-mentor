@@ -1,6 +1,6 @@
 import { NEXT_AUTH } from "@/lib/auth";
+import { fetchLeetCodeStats } from "@/lib/leetcode";
 import prisma from "@/lib/prisma";
-import axios from "axios";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
@@ -15,7 +15,6 @@ export async function GET() {
         }
         const user = await prisma.user.findUnique({
             where: { id: session.user.id },
-            select: { leetcodeUsername: true },
         });
         if (!user?.leetcodeUsername) {
             return NextResponse.json(
@@ -25,10 +24,26 @@ export async function GET() {
                 { status: 400 }
             );
         }
-        const { data } = await axios.get(
-            `https://alfa-leetcode-api.onrender.com/${user.leetcodeUsername}`
-        );
-        return NextResponse.json({ success: true, stats: data, status: 200 });
+        const cached = await prisma.leetcodeStats.findUnique({
+            where: { userId: user.id },
+        });
+        // 30 min ke andar cache hue ya nhi, if yes then return
+        const THIRTY_MINUTES = 30 * 60 * 1000;
+        if (
+            cached &&
+            Date.now() - cached.updatedAt.getTime() < THIRTY_MINUTES
+        ) {
+            return NextResponse.json({ cached: true, stats: cached.statsJson });
+        }
+        // if no then fetch
+        const fetchStats = await fetchLeetCodeStats(user.leetcodeUsername);
+        // if new - db mai add, if exist - update karo
+        await prisma.leetcodeStats.upsert({
+            where: { userId: user.id },
+            update: { statsJson: fetchStats },
+            create: { userId: user.id, statsJson: fetchStats },
+        });
+        return NextResponse.json({ cached: false, stats: fetchStats });
     } catch (err) {
         console.error("Error fetching stats:", err);
         return NextResponse.json(
