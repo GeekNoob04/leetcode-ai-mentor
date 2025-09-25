@@ -1,83 +1,45 @@
-"use client";
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 interface Stats {
     username: string;
     totalSolved: number;
+    totalQuestions: number;
     easySolved: number;
     mediumSolved: number;
     hardSolved: number;
-    contestRating: number;
     ranking: number;
+    contestRating?: number;
+    contributionPoints?: number;
+    reputation?: number;
 }
+
 export default function Dashboard() {
     const [stats, setStats] = useState<Stats | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const fetchStats = async () => {
+        async function fetchData() {
             try {
+                setLoading(true);
                 const res = await axios.get("/api/leetcode/stats");
-                if (res.data.success) {
-                    setStats(res.data.stats);
-                } else {
-                    setError(res.data.error || "Failed to fetch stats");
-                }
-            } catch (err) {
-                console.log(err);
-                setError("An error occurred while fetching stats");
+                setStats(res.data.stats);
+            } catch (e) {
+                console.error("Error fetching stats:", e);
             } finally {
                 setLoading(false);
             }
-        };
-        fetchStats();
+        }
+        fetchData();
     }, []);
-    if (loading) {
-        return (
-            <p className="text-center mt-10">Loading Your LeetCode Stats....</p>
-        );
-    }
-    if (error) {
-        return <p className="text-center mt-10 text-red-500"> {error}</p>;
-    }
+    if (loading) return <p>Loading...</p>;
+    if (!stats) return <p>No stats available.</p>;
     return (
-        <div>
-            <h1>📊 Your LeetCode Dashboard</h1>
-            {stats && (
-                <div>
-                    <div>
-                        <p>Username</p>
-                        <p>{stats.username}</p>
-                    </div>
-                    <div>
-                        <p>Total Solved</p>
-                        <p>{stats.totalSolved}</p>
-                    </div>
-                    <div>
-                        <p>Easy Solved</p>
-                        <p>{stats.easySolved}</p>
-                    </div>
-                    <div>
-                        <p>Medium Solved</p>
-                        <p>{stats.mediumSolved}</p>
-                    </div>
-                    <div>
-                        <p>Hard Solved</p>
-                        <p>{stats.hardSolved}</p>
-                    </div>
-                    <div>
-                        <p>Contest Rating</p>
-                        <p>{stats.contestRating}</p>
-                    </div>
-                    <div>
-                        <p>Global Ranking</p>
-                        <p>#{stats.ranking}</p>
-                    </div>
-                </div>
-            )}
+        <div className="p-4">
+            <h1 className="text-2xl font-bold">Leetcode Dashboard</h1>
+            <pre className="bg-gray-900 text-white p-4 rounded-xl mt-4 overflow-x-auto">
+                {JSON.stringify(stats, null, 2)}
+            </pre>
         </div>
     );
 }
