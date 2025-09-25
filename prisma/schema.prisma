@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
 }
 
 datasource db {
@@ -23,7 +22,7 @@ model User {
   image            String?
   accounts         Account[]
   sessions         Session[]
-  leetcodeUsername String?        @unique
+  leetcodeUsername String?        
   statsHistory     StatsHistory[]
   leetcodeStats    LeetcodeStats? @relation("LeetcodeStatsToUser")
 }
