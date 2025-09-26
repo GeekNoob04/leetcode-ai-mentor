@@ -10,8 +10,6 @@ interface Stats {
     hardSolved: number;
     ranking: number;
     contestRating?: number;
-    contributionPoints?: number;
-    reputation?: number;
 }
 
 export default function Dashboard() {
@@ -40,6 +38,7 @@ export default function Dashboard() {
     return (
         <div className="p-6 space-y-6">
             <h1 className="text-3xl font-bold">Leetcode Dashboard</h1>
+            <h2 className="text-3xl font-bold">{stats.username}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-neutral-100 rounded-xl shadow p-6">
                     <p className="text-gray-500">Total Solved</p>
