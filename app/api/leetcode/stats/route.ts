@@ -4,6 +4,11 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
+type AcSubmissionNum = {
+    difficulty: string;
+    count: number;
+};
+
 export async function GET() {
     try {
         const session = await getServerSession(NEXT_AUTH);
@@ -37,13 +42,42 @@ export async function GET() {
         }
         // if no then fetch
         const fetchStats = await fetchLeetCodeStats(user.leetcodeUsername);
+        const stats = {
+            username: fetchStats.matchedUser.username,
+            totalSolved:
+                fetchStats.matchedUser.submitStats.acSubmissionNum.reduce(
+                    (acc: number, cur: AcSubmissionNum) => acc + cur.count,
+                    0
+                ),
+            easySolved:
+                fetchStats.matchedUser.submitStats.acSubmissionNum[1]?.count ??
+                0,
+            mediumSolved:
+                fetchStats.matchedUser.submitStats.acSubmissionNum[2]?.count ??
+                0,
+            hardSolved:
+                fetchStats.matchedUser.submitStats.acSubmissionNum[3]?.count ??
+                0,
+            contestRating: fetchStats.matchedUser.profile.reputation ?? 0,
+            ranking: fetchStats.matchedUser.profile.ranking ?? 0,
+        };
         // if new - db mai add, if exist - update karo
         await prisma.leetcodeStats.upsert({
             where: { userId: user.id },
-            update: { statsJson: fetchStats },
-            create: { userId: user.id, statsJson: fetchStats },
+            update: { statsJson: stats },
+            create: { userId: user.id, statsJson: stats },
         });
-        return NextResponse.json({ cached: false, stats: fetchStats });
+        await prisma.statsHistory.create({
+            data: {
+                userId: user.id,
+                totalSolved: stats.totalSolved,
+                easySolved: stats.easySolved,
+                mediumSolved: stats.mediumSolved,
+                hardSolved: stats.hardSolved,
+                ranking: stats.ranking,
+            },
+        });
+        return NextResponse.json({ cached: false, stats });
     } catch (err) {
         console.error("Error fetching stats:", err);
         return NextResponse.json(
