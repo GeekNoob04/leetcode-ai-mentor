@@ -4,11 +4,6 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-type AcSubmissionNum = {
-    difficulty: string;
-    count: number;
-};
-
 export async function GET() {
     try {
         const session = await getServerSession(NEXT_AUTH);
@@ -45,10 +40,8 @@ export async function GET() {
         const stats = {
             username: fetchStats.matchedUser.username,
             totalSolved:
-                fetchStats.matchedUser.submitStats.acSubmissionNum.reduce(
-                    (acc: number, cur: AcSubmissionNum) => acc + cur.count,
-                    0
-                ),
+                fetchStats.matchedUser.submitStats.acSubmissionNum[0]?.count ??
+                0,
             easySolved:
                 fetchStats.matchedUser.submitStats.acSubmissionNum[1]?.count ??
                 0,
@@ -61,6 +54,7 @@ export async function GET() {
             contestRating: fetchStats.matchedUser.profile.reputation ?? 0,
             ranking: fetchStats.matchedUser.profile.ranking ?? 0,
         };
+
         // if new - db mai add, if exist - update karo
         await prisma.leetcodeStats.upsert({
             where: { userId: user.id },
