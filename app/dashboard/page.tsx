@@ -38,7 +38,14 @@ export default function Dashboard() {
     return (
         <div className="p-6 space-y-6">
             <h1 className="text-3xl font-bold">Leetcode Dashboard</h1>
-            <h2 className="text-3xl font-bold">{stats.username}</h2>
+            <div className="flex items-center space-x-3 bg-white rounded-lg shadow px-4 py-2 w-fit">
+                <span className="text-lg font-semibold text-gray-500">
+                    Username:
+                </span>
+                <span className="text-2xl font-bold text-indigo-700">
+                    {stats.username}
+                </span>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-neutral-100 rounded-xl shadow p-6">
                     <p className="text-gray-500">Total Solved</p>
