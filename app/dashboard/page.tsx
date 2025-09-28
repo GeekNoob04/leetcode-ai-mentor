@@ -69,7 +69,9 @@ export default function Dashboard() {
 
                 <div className="bg-blue-100 rounded-xl shadow p-6">
                     <p className="text-gray-700">Ranking</p>
-                    <p className="text-3xl font-bold">#{stats.ranking}</p>
+                    <p className="text-3xl font-bold">
+                        #{stats.ranking ?? "N/A"}
+                    </p>
                 </div>
 
                 <div className="bg-purple-100 rounded-xl shadow p-6">
