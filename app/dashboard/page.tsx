@@ -123,7 +123,7 @@ export default function Dashboard() {
                         <Tooltip />
                         <Line
                             type="monotone"
-                            dataKey="solved"
+                            dataKey="totalSolved"
                             stroke="#2563eb"
                         />
                     </LineChart>
