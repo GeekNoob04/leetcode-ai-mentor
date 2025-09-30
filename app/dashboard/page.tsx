@@ -1,6 +1,15 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import {
+    CartesianGrid,
+    Line,
+    LineChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from "recharts";
 
 interface Stats {
     username: string;
@@ -12,8 +21,17 @@ interface Stats {
     contestRating?: number;
 }
 
+interface History {
+    fetchedAt: string;
+    totalSolved: number;
+    easySolved: number;
+    mediumSolved: number;
+    hardSolved: number;
+}
+
 export default function Dashboard() {
     const [stats, setStats] = useState<Stats | null>(null);
+    const [history, setHistory] = useState<History[]>([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -23,6 +41,9 @@ export default function Dashboard() {
                 const res = await axios.get("/api/leetcode/stats");
                 console.log("API response:", res.data);
                 setStats(res.data.stats);
+
+                const hist = await axios.get("/api/leetcode/history");
+                setHistory(hist.data.history);
             } catch (e) {
                 console.error("Error fetching stats:", e);
             } finally {
@@ -80,6 +101,33 @@ export default function Dashboard() {
                         {stats.contestRating ?? "N/A"}
                     </p>
                 </div>
+            </div>
+            <div>
+                <h2>Progress Over Time</h2>
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={history}>
+                        <CartesianGrid stroke="#ccc" />
+                        <XAxis
+                            dataKey="fetchedAt"
+                            tickFormatter={(tick) => {
+                                return new Date(tick).toLocaleDateString(
+                                    "en-US",
+                                    {
+                                        month: "short",
+                                        day: "numeric",
+                                    }
+                                );
+                            }}
+                        />
+                        <YAxis />
+                        <Tooltip />
+                        <Line
+                            type="monotone"
+                            dataKey="solved"
+                            stroke="#2563eb"
+                        />
+                    </LineChart>
+                </ResponsiveContainer>
             </div>
         </div>
     );
