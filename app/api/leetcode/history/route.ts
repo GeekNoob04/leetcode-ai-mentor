@@ -16,7 +16,7 @@ export async function GET() {
         }
         const history = await prisma.statsHistory.findMany({
             where: { userId: session.user.id },
-            orderBy: { fetchedAt: "desc" },
+            orderBy: { fetchedAt: "asc" },
             select: {
                 fetchedAt: true,
                 totalSolved: true,
@@ -24,6 +24,7 @@ export async function GET() {
                 mediumSolved: true,
                 hardSolved: true,
             },
+            take: 30,
         });
         return NextResponse.json({ history });
     } catch (e) {
