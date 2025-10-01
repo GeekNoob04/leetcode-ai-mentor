@@ -71,7 +71,7 @@ export async function GET() {
                 ranking: stats.ranking,
             },
         });
-        //Avoid code duplication in history if no changes
+        // Avoid code duplication in history if no changes
         const lastHistory = await prisma.statsHistory.findFirst({
             where: { userId: user.id },
             orderBy: { fetchedAt: "desc" },
@@ -82,7 +82,14 @@ export async function GET() {
             new Date(lastHistory.fetchedAt).toDateString() ===
                 new Date().toDateString();
 
-        if (!alreadyToday || lastHistory.totalSolved !== stats.totalSolved) {
+        const changed =
+            !lastHistory ||
+            lastHistory.totalSolved !== stats.totalSolved ||
+            lastHistory.easySolved !== stats.easySolved ||
+            lastHistory.mediumSolved !== stats.mediumSolved ||
+            lastHistory.hardSolved !== stats.hardSolved;
+
+        if (!alreadyToday || changed) {
             await prisma.statsHistory.create({
                 data: {
                     userId: user.id,
