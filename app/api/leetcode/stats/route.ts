@@ -71,6 +71,29 @@ export async function GET() {
                 ranking: stats.ranking,
             },
         });
+        //Avoid code duplication in history if no changes
+        const lastHistory = await prisma.statsHistory.findFirst({
+            where: { userId: user.id },
+            orderBy: { fetchedAt: "desc" },
+        });
+
+        const alreadyToday =
+            lastHistory &&
+            new Date(lastHistory.fetchedAt).toDateString() ===
+                new Date().toDateString();
+
+        if (!alreadyToday || lastHistory.totalSolved !== stats.totalSolved) {
+            await prisma.statsHistory.create({
+                data: {
+                    userId: user.id,
+                    totalSolved: stats.totalSolved,
+                    easySolved: stats.easySolved,
+                    mediumSolved: stats.mediumSolved,
+                    hardSolved: stats.hardSolved,
+                    ranking: stats.ranking,
+                },
+            });
+        }
         return NextResponse.json({ cached: false, stats });
     } catch (err) {
         console.error("Error fetching stats:", err);
