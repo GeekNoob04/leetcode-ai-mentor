@@ -126,6 +126,27 @@ export default function Dashboard() {
                             stroke="#2563eb"
                             strokeWidth={2}
                         />
+                        <Line
+                            type="monotone"
+                            dataKey="easySolved"
+                            stroke="#22c55e"
+                            strokeWidth={2}
+                            name="Easy"
+                        />
+                        <Line
+                            type="monotone"
+                            dataKey="mediumSolved"
+                            stroke="#eab308"
+                            strokeWidth={2}
+                            name="Medium"
+                        />
+                        <Line
+                            type="monotone"
+                            dataKey="hardSolved"
+                            stroke="#ef4444"
+                            strokeWidth={2}
+                            name="Hard"
+                        />
                     </LineChart>
                 </ResponsiveContainer>
             </div>
