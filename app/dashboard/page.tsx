@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import {
     CartesianGrid,
+    Legend,
     Line,
     LineChart,
     ResponsiveContainer,
@@ -101,7 +102,6 @@ export default function Dashboard() {
                 </div>
             </div>
 
-            {/* Progress Over Time */}
             <div className="bg-white rounded-xl shadow p-6">
                 <h2 className="text-xl font-semibold mb-4">
                     Progress Over Time
@@ -120,11 +120,13 @@ export default function Dashboard() {
                         />
                         <YAxis />
                         <Tooltip />
+                        <Legend />
                         <Line
                             type="monotone"
                             dataKey="totalSolved"
                             stroke="#2563eb"
                             strokeWidth={2}
+                            name="Total"
                         />
                         <Line
                             type="monotone"
