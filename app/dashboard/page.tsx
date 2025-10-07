@@ -30,10 +30,23 @@ interface History {
     mediumSolved: number;
     hardSolved: number;
 }
+interface ContestStats {
+    attendedContests: number;
+    rating: number;
+    globalRanking: number;
+    topPercentage: number;
+    history: {
+        title: string;
+        startTime: string;
+        rating: number;
+        ranking: number;
+    }[];
+}
 
 export default function Dashboard() {
     const [stats, setStats] = useState<Stats | null>(null);
     const [history, setHistory] = useState<History[]>([]);
+    const [contest, setContest] = useState<ContestStats | null>(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -46,6 +59,9 @@ export default function Dashboard() {
 
                 const hist = await axios.get("/api/leetcode/history");
                 setHistory(hist.data.history);
+
+                const contestRes = await axios.get("/api/leetcode/contest");
+                setContest(contestRes.data.contest);
             } catch (e) {
                 console.error("Error fetching stats:", e);
             } finally {
@@ -152,6 +168,8 @@ export default function Dashboard() {
                     </LineChart>
                 </ResponsiveContainer>
             </div>
+
+            
 
             <ProblemDistributionChart
                 easy={stats.easySolved}
