@@ -169,7 +169,52 @@ export default function Dashboard() {
                 </ResponsiveContainer>
             </div>
 
-            
+            {contest && (
+                <div className="bg-white rounded-xl shadow p-6">
+                    {" "}
+                    <h2 className="text-xl font-semibold mb-4">
+                        {" "}
+                        Contest Stats{" "}
+                    </h2>{" "}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {" "}
+                        <div className="bg-blue-100 p-4 rounded-lg shadow">
+                            {" "}
+                            <p className="text-gray-700">
+                                Contests Attended
+                            </p>{" "}
+                            <p className="text-2xl font-bold">
+                                {" "}
+                                {contest.attendedContests}{" "}
+                            </p>{" "}
+                        </div>{" "}
+                        <div className="bg-purple-100 p-4 rounded-lg shadow">
+                            {" "}
+                            <p className="text-gray-700">Contest Rating</p>{" "}
+                            <p className="text-2xl font-bold">
+                                {" "}
+                                {contest.rating ?? "N/A"}{" "}
+                            </p>{" "}
+                        </div>{" "}
+                        <div className="bg-green-100 p-4 rounded-lg shadow">
+                            {" "}
+                            <p className="text-gray-700">Global Rank</p>{" "}
+                            <p className="text-2xl font-bold">
+                                {" "}
+                                {contest.globalRanking ?? "N/A"}{" "}
+                            </p>{" "}
+                        </div>{" "}
+                        <div className="bg-yellow-100 p-4 rounded-lg shadow">
+                            {" "}
+                            <p className="text-gray-700">Top %</p>{" "}
+                            <p className="text-2xl font-bold">
+                                {" "}
+                                {contest.topPercentage?.toFixed(2)}%{" "}
+                            </p>{" "}
+                        </div>{" "}
+                    </div>{" "}
+                </div>
+            )}
 
             <ProblemDistributionChart
                 easy={stats.easySolved}
