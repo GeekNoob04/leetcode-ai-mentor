@@ -41,7 +41,7 @@ export async function GET() {
             ranking: latest?.ranking,
             totalEntries: history.length,
         };
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
         const prompt = `
         You are an AI coding mentor analyzing a user's LeetCode performance.
         Here is the user's LeetCode progress summary:

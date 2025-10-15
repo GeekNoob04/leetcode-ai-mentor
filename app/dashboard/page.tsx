@@ -47,6 +47,7 @@ export default function Dashboard() {
     const [stats, setStats] = useState<Stats | null>(null);
     const [history, setHistory] = useState<History[]>([]);
     const [contest, setContest] = useState<ContestStats | null>(null);
+    const [aiFeedback, setAiFeedback] = useState("");
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -62,6 +63,11 @@ export default function Dashboard() {
 
                 const contestRes = await axios.get("/api/leetcode/contest");
                 setContest(contestRes.data.contest);
+
+                const aiRes = await axios.get("/api/leetcode/ai-insights");
+                setAiFeedback(
+                    aiRes.data.aiFeedback || "No AI feedback available."
+                );
             } catch (e) {
                 console.error("Error fetching stats:", e);
             } finally {
@@ -76,6 +82,20 @@ export default function Dashboard() {
 
     return (
         <div className="p-6 space-y-8">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-2xl shadow-md">
+                <h2 className="text-xl font-semibold mb-3">
+                    AI Mentor Feedback 🤖
+                </h2>
+                {loading ? (
+                    <p className="text-gray-500 italic">
+                        Analyzing your performance...
+                    </p>
+                ) : (
+                    <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
+                        {aiFeedback}
+                    </p>
+                )}
+            </div>
             <h1 className="text-3xl font-bold">Leetcode Dashboard</h1>
 
             <div className="flex items-center space-x-3 bg-white rounded-lg shadow px-4 py-2 w-fit">
