@@ -1,3 +1,4 @@
+import { generateLeetCodePrompt } from "@/lib/aiPrompt";
 import { NEXT_AUTH } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -32,26 +33,17 @@ export async function GET() {
         const latest = history.at(-1); // latest entry
         const first = history[0]; // first entry
         const summary = {
-            username: user?.leetcodeUsername,
+            username: user?.leetcodeUsername ?? "",
             totalSolved: latest?.totalSolved,
             growth: (latest?.totalSolved ?? 0) - (first?.totalSolved ?? 0),
             easy: latest?.easySolved,
             medium: latest?.mediumSolved,
             hard: latest?.hardSolved,
-            ranking: latest?.ranking,
+            ranking: latest?.ranking ?? undefined,
             totalEntries: history.length,
         };
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-        const prompt = `
-        You are an AI coding mentor analyzing a user's LeetCode performance.
-        Here is the user's LeetCode progress summary:
-        ${JSON.stringify(summary, null, 2)}
-        Your task:
-        - Evaluate their progress
-        - Identify strengths and weaknesses (by problem difficulty)
-        - Give motivational and improvement-oriented feedback
-        - Be specific, friendly, and concise (max 150 words)
-        `;
+        const prompt = generateLeetCodePrompt(summary);
         const result = await model.generateContent(prompt);
         const response = result.response.text();
         return NextResponse.json({ aiFeedback: response });
