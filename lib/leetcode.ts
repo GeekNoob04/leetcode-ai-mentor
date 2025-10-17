@@ -90,3 +90,27 @@ export async function fetchLeetCodeContestStats(username: string) {
         ),
     };
 }
+export async function fetchLeetCodeTopicStats(username: string) {
+    const query = `
+    query userProfileQuestions($username: String!) {
+        matchedUser(username: $username) {
+            tagProblemCounts {
+                advanced {
+                    tagName
+                    tagSlug
+                    problemsSolved
+                }
+                intermediate {
+                    tagName
+                    tagSlug
+                    problemsSolved
+                }
+                fundamental {
+                    tagName
+                    tagSlug
+                    problemsSolved
+                }
+            }
+        }
+    }`;
+}
