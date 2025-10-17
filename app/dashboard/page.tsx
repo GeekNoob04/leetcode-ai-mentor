@@ -43,8 +43,8 @@ interface ContestStats {
     }[];
 }
 interface Topic {
-    topicName: string;
-    solvedCount: number;
+    name: string;
+    solved: number;
 }
 
 export default function Dashboard() {
@@ -250,14 +250,14 @@ export default function Dashboard() {
                     </h2>
                     {topics.map((t, index) => (
                         <div
-                            key={`${t.topicName}-${index}`}
+                            key={`${t.name}-${index}`}
                             className="bg-indigo-50 p-4 rounded-lg border border-indigo-100"
                         >
                             <p className="text-gray-700 font-medium">
-                                {t.topicName}
+                                {t.name}
                             </p>
                             <p className="text-2xl font-bold text-indigo-600">
-                                {t.solvedCount}
+                                {t.solved}
                             </p>
                         </div>
                     ))}
