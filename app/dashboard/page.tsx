@@ -42,11 +42,16 @@ interface ContestStats {
         ranking: number;
     }[];
 }
+interface Topic {
+    topicName: string;
+    solvedCount: number;
+}
 
 export default function Dashboard() {
     const [stats, setStats] = useState<Stats | null>(null);
     const [history, setHistory] = useState<History[]>([]);
     const [contest, setContest] = useState<ContestStats | null>(null);
+    const [topics, setTopics] = useState<Topic[]>([]);
     const [aiFeedback, setAiFeedback] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -68,6 +73,9 @@ export default function Dashboard() {
                 setAiFeedback(
                     aiRes.data.aiFeedback || "No AI feedback available."
                 );
+                const topicsRes = await axios.get("/api/leetcode/topics");
+                console.log("Topics API response:", topicsRes.data);
+                setTopics(topicsRes.data.topics || []);
             } catch (e) {
                 console.error("Error fetching stats:", e);
             } finally {
@@ -233,6 +241,26 @@ export default function Dashboard() {
                             </p>{" "}
                         </div>{" "}
                     </div>{" "}
+                </div>
+            )}
+            {topics.length > 0 && (
+                <div className="bg-white rounded-xl shadow p-6">
+                    <h2 className="text-xl font-semibold mb-4">
+                        Topic Distribution
+                    </h2>
+                    {topics.map((t, index) => (
+                        <div
+                            key={`${t.topicName}-${index}`}
+                            className="bg-indigo-50 p-4 rounded-lg border border-indigo-100"
+                        >
+                            <p className="text-gray-700 font-medium">
+                                {t.topicName}
+                            </p>
+                            <p className="text-2xl font-bold text-indigo-600">
+                                {t.solvedCount}
+                            </p>
+                        </div>
+                    ))}
                 </div>
             )}
 
