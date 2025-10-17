@@ -30,8 +30,14 @@ export async function GET() {
                 { status: 400 }
             );
         }
-        const latest = history.at(-1); // latest entry
-        const first = history[0]; // first entry
+
+        const topicStats = await prisma.topicStats.findFirst({
+            where: { userId: session.user.id },
+            orderBy: { fetchedAt: "desc" },
+        });
+
+        const latest = history.at(-1);
+        const first = history[0];
         const summary = {
             username: user?.leetcodeUsername ?? "",
             totalSolved: latest?.totalSolved,
@@ -41,12 +47,13 @@ export async function GET() {
             hard: latest?.hardSolved,
             ranking: latest?.ranking ?? undefined,
             totalEntries: history.length,
+            topics: topicStats?.topics ?? [],
         };
         const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
         const prompt = generateLeetCodePrompt(summary);
         const result = await model.generateContent(prompt);
-        const response = result.response.text();
-        return NextResponse.json({ aiFeedback: response });
+        const aiFeedback = result.response.text();
+        return NextResponse.json({ aiFeedback });
     } catch (e) {
         console.error("Error generating AI insights:", e);
         return NextResponse.json(
