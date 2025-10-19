@@ -119,7 +119,7 @@ export const NEXT_AUTH: AuthOptions = {
 
         async redirect({ baseUrl }) {
             // if (url.startsWith(baseUrl)) return url;
-            return `${baseUrl}/link`;
+            return `${baseUrl}/login`;
         },
     },
 
@@ -127,7 +127,8 @@ export const NEXT_AUTH: AuthOptions = {
         strategy: "jwt" as const,
     },
 
-    // pages: {
-    //     signIn: "/auth/signin",
-    // },
+    pages: {
+        signIn: "/login",
+    },
+    secret: process.env.NEXTAUTH_SECRET,
 };
