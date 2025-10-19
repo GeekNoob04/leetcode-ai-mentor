@@ -7,11 +7,18 @@ import { useEffect } from "react";
 export default function LoginPage() {
     const { data: session } = useSession();
     const router = useRouter();
+
     useEffect(() => {
-        if (session) {
-            router.push("/dashboard");
+        if (session?.user) {
+            // Check if user has linked their LeetCode username
+            if (session.user.leetcodeUsername) {
+                router.push("/dashboard");
+            } else {
+                router.push("/link");
+            }
         }
     }, [session, router]);
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white">
             <div className="bg-gray-800 p-8 rounded-xl shadow-xl text-center space-y-6">

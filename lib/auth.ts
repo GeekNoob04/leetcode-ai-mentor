@@ -117,9 +117,19 @@ export const NEXT_AUTH: AuthOptions = {
             return session;
         },
 
-        async redirect({ baseUrl }) {
-            // if (url.startsWith(baseUrl)) return url;
-            return `${baseUrl}/login`;
+        async redirect({ url, baseUrl }) {
+            // If logging out (signOut was called with callbackUrl)
+            if (url.includes("/login")) {
+                return url;
+            }
+
+            // If signing in, redirect to /link
+            if (url.startsWith(baseUrl)) {
+                return `${baseUrl}/link`;
+            }
+
+            // Default to /link for sign in
+            return `${baseUrl}/link`;
         },
     },
 
