@@ -5,7 +5,17 @@ import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function Navbar({ user }: { user: any }) {
+export default function Navbar({
+    user,
+}: {
+    user: {
+        name?: string | null;
+        email?: string | null;
+        image?: string | null;
+        leetcodeUsername?: string | null;
+        id: string;
+    };
+}) {
     const router = useRouter();
     async function handleUnlink() {
         try {
