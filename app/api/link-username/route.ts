@@ -9,20 +9,27 @@ export async function POST(req: NextRequest) {
     if (!session?.user?.id) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
     try {
         const { leetcodeUsername } = await req.json();
         if (!leetcodeUsername || typeof leetcodeUsername !== "string") {
             return NextResponse.json(
                 { error: "Invalid username" },
-                {
-                    status: 400,
-                }
+                { status: 400 }
             );
         }
+
+        // Clear old cached stats before linking a new account
+        await prisma.leetcodeStats.deleteMany({
+            where: { userId: session.user.id },
+        });
+
+        // Update user with new username
         const updatedUser = await prisma.user.update({
             where: { id: session.user.id },
             data: { leetcodeUsername },
         });
+
         return NextResponse.json(
             { success: true, user: updatedUser },
             { status: 200 }
