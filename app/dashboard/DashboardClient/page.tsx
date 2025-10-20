@@ -13,6 +13,7 @@ import {
     XAxis,
     YAxis,
 } from "recharts";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface Stats {
     username: string;
@@ -54,7 +55,9 @@ export default function DashboardClient() {
     const [contest, setContest] = useState<ContestStats | null>(null);
     const [topics, setTopics] = useState<Topic[]>([]);
     const [aiFeedback, setAiFeedback] = useState("");
+    const [aiLoading, setAiLoading] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [showFeedback, setShowFeedback] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -69,11 +72,6 @@ export default function DashboardClient() {
                 const contestRes = await axios.get("/api/leetcode/contest");
                 setContest(contestRes.data.contest);
 
-                const aiRes = await axios.get("/api/leetcode/ai-insights");
-                setAiFeedback(
-                    aiRes.data.aiFeedback || "No AI feedback available."
-                );
-
                 const topicsRes = await axios.get("/api/leetcode/topics");
                 setTopics(topicsRes.data.topics || []);
             } catch (e) {
@@ -84,6 +82,18 @@ export default function DashboardClient() {
         }
         fetchData();
     }, []);
+    const fetchAiFeedback = async () => {
+        if (aiFeedback) return;
+        setAiLoading(true);
+        try {
+            const aiRes = await axios.get("/api/leetcode/ai-insights");
+            setAiFeedback(aiRes.data.aiFeedback || "No AI feedback available.");
+        } catch (e) {
+            console.error("Error fetching AI feedback:", e);
+        } finally {
+            setAiLoading(false);
+        }
+    };
 
     if (loading) return <p>Loading...</p>;
     if (!stats) return <p>No stats available.</p>;
@@ -91,12 +101,32 @@ export default function DashboardClient() {
     return (
         <div className="space-y-8">
             <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-2xl shadow-md">
-                <h2 className="text-xl font-semibold mb-3 text-gray-900">
-                    AI Mentor Feedback 🤖
-                </h2>
-                <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
-                    {aiFeedback}
-                </p>
+                <button
+                    onClick={() => {
+                        setShowFeedback(!showFeedback);
+                        if (!showFeedback) fetchAiFeedback();
+                    }}
+                    className="flex items-center justify-between w-full text-left"
+                >
+                    <h2 className="text-xl font-semibold mb-3 text-gray-900">
+                        AI Mentor Feedback 🤖
+                    </h2>
+                    {showFeedback ? <ChevronUp /> : <ChevronDown />}
+                </button>
+
+                {showFeedback && (
+                    <div className="mt-4">
+                        {aiLoading ? (
+                            <p className="text-gray-500 italic">
+                                Generating feedback...
+                            </p>
+                        ) : (
+                            <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
+                                {aiFeedback}
+                            </p>
+                        )}
+                    </div>
+                )}
             </div>
 
             <h1 className="text-3xl font-bold text-white">
