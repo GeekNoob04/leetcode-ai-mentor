@@ -69,59 +69,59 @@ export default function LoginPage() {
                     </div>
 
                     <div className="space-y-3 lg:space-y-4">
-                        <div className="flex items-center space-x-3 lg:space-x-4 bg-slate-800/60 backdrop-blur-sm p-3 lg:p-4 rounded-xl border border-slate-600/40 hover:bg-slate-800/80 hover:border-slate-500/60 transition-all duration-300 hover:shadow-lg hover:shadow-slate-700/20">
+                        <div className="flex items-center space-x-3 lg:space-x-4 bg-slate-800/60 backdrop-blur-sm p-3 lg:p-4 rounded-xl border border-slate-600/40 hover:bg-slate-800/80 hover:border-violet-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-violet-700/20">
                             <div className="bg-gradient-to-br from-violet-500 to-purple-600 p-2 lg:p-3 rounded-lg shadow-md flex-shrink-0">
-                                <span className="text-xl lg:text-2xl">✨</span>
+                                <span className="text-xl lg:text-2xl">🧠</span>
                             </div>
                             <div className="min-w-0">
                                 <h3 className="font-semibold text-slate-100 mb-1 text-sm lg:text-base">
-                                    AI-Powered Insights
+                                    AI-Powered Mentorship
                                 </h3>
                                 <p className="text-slate-300 text-xs lg:text-sm">
                                     Get personalized recommendations based on
-                                    your coding patterns
+                                    your LeetCode solving patterns
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex items-center space-x-3 lg:space-x-4 bg-slate-800/60 backdrop-blur-sm p-3 lg:p-4 rounded-xl border border-slate-600/40 hover:bg-slate-800/80 hover:border-slate-500/60 transition-all duration-300 hover:shadow-lg hover:shadow-slate-700/20">
+                        <div className="flex items-center space-x-3 lg:space-x-4 bg-slate-800/60 backdrop-blur-sm p-3 lg:p-4 rounded-xl border border-slate-600/40 hover:bg-slate-800/80 hover:border-emerald-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-700/20">
                             <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-2 lg:p-3 rounded-lg shadow-md flex-shrink-0">
-                                <span className="text-xl lg:text-2xl">📊</span>
+                                <span className="text-xl lg:text-2xl">📈</span>
                             </div>
                             <div className="min-w-0">
                                 <h3 className="font-semibold text-slate-100 mb-1 text-sm lg:text-base">
-                                    Progress Analytics
+                                    LeetCode Analytics
                                 </h3>
                                 <p className="text-slate-300 text-xs lg:text-sm">
-                                    Visualize your growth with detailed
-                                    performance metrics
+                                    Visualize your problem-solving growth with
+                                    detailed performance metrics
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex items-center space-x-3 lg:space-x-4 bg-slate-800/60 backdrop-blur-sm p-3 lg:p-4 rounded-xl border border-slate-600/40 hover:bg-slate-800/80 hover:border-slate-500/60 transition-all duration-300 hover:shadow-lg hover:shadow-slate-700/20">
+                        <div className="flex items-center space-x-3 lg:space-x-4 bg-slate-800/60 backdrop-blur-sm p-3 lg:p-4 rounded-xl border border-slate-600/40 hover:bg-slate-800/80 hover:border-pink-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-pink-700/20">
                             <div className="bg-gradient-to-br from-fuchsia-500 to-pink-600 p-2 lg:p-3 rounded-lg shadow-md flex-shrink-0">
-                                <span className="text-xl lg:text-2xl">🎯</span>
+                                <span className="text-xl lg:text-2xl">⚡</span>
                             </div>
                             <div className="min-w-0">
                                 <h3 className="font-semibold text-slate-100 mb-1 text-sm lg:text-base">
-                                    Smart Goal Tracking
+                                    Smart Problem Suggestions
                                 </h3>
                                 <p className="text-slate-300 text-xs lg:text-sm">
-                                    Stay motivated with intelligent problem
+                                    Stay motivated with intelligent next-problem
                                     recommendations
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="mt-6 lg:mt-8 p-4 lg:p-5 bg-slate-800/70 backdrop-blur-sm rounded-2xl border border-slate-600/40 shadow-xl">
+                    <div className="mt-6 lg:mt-8 p-4 lg:p-5 bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm rounded-2xl border border-violet-500/20 shadow-xl">
                         <p className="text-slate-200 italic text-center mb-2 text-xs lg:text-sm">
-                            The best way to predict the future is to create it
-                            through consistent practice and smart learning.
+                            Every test case passed is confidence built. Every
+                            edge case handled is mastery achieved.
                         </p>
-                        <p className="text-slate-400 text-xs text-center font-medium">
-                            — Your AI Mentor
+                        <p className="text-violet-300 text-xs text-center font-medium">
+                            — LeetMentor AI
                         </p>
                     </div>
                 </div>
