@@ -140,7 +140,7 @@ export default function LoginPage() {
                                 <Sparkles className="w-3 h-3 text-white absolute -top-0.5 -right-0.5" />
                             </div>
                             <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
-                                CodeMentor AI
+                                LeetMentor AI
                             </h1>
                         </div>
                     </div>
@@ -156,7 +156,7 @@ export default function LoginPage() {
                                 <Sparkles className="w-3.5 h-3.5 text-white absolute -top-0.5 -right-0.5" />
                             </div>
                             <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
-                                CodeMentor AI
+                                LeetMentor AI
                             </h1>
                         </div>
                         <p className="text-slate-400 text-sm">
