@@ -54,7 +54,6 @@ export default function LinkPage() {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 px-4 py-8 sm:py-12">
             <div className="w-full max-w-lg">
-                {/* Header */}
                 <div className="text-center mb-6 sm:mb-10">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-100 mb-2 sm:mb-3 tracking-tight px-2">
                         Connect LeetCode Account
@@ -65,7 +64,6 @@ export default function LinkPage() {
                     </p>
                 </div>
 
-                {/* Main Card */}
                 <div className="bg-slate-900/70 border border-slate-800/60 rounded-2xl shadow-xl p-6 sm:p-8">
                     <form
                         onSubmit={handleSubmit}
@@ -114,7 +112,6 @@ export default function LinkPage() {
                         </button>
                     </form>
 
-                    {/* Help Text */}
                     <div className="mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-slate-800/60">
                         <p className="text-xs text-slate-500 text-center leading-relaxed px-2">
                             You can find your username in your LeetCode profile

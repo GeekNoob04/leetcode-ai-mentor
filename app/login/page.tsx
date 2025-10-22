@@ -41,7 +41,6 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col lg:flex-row overflow-hidden">
-            {/* Left Panel - Features */}
             <div className="hidden md:flex lg:w-1/2 bg-gradient-to-br from-slate-800/50 via-slate-900 to-slate-950 items-center justify-center p-4 md:p-6 lg:p-12 border-r border-slate-700/40">
                 <div className="max-w-lg w-full">
                     <div className="mb-6 lg:mb-10">
@@ -145,7 +144,6 @@ export default function LoginPage() {
                         </div>
                     </div>
 
-                    {/* Tablet Header */}
                     <div className="text-center mb-6 hidden md:block lg:hidden">
                         <div className="inline-flex items-center gap-3 mb-4">
                             <div className="relative w-14 h-14 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-xl flex items-center justify-center shadow-lg">
@@ -164,7 +162,6 @@ export default function LoginPage() {
                         </p>
                     </div>
 
-                    {/* Login Card */}
                     <div className="bg-gradient-to-b from-slate-900/80 to-slate-900 rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 border border-slate-800/60">
                         <div className="text-center mb-6">
                             <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-3">
@@ -181,7 +178,6 @@ export default function LoginPage() {
                             </div>
                         )}
 
-                        {/* OAuth Buttons */}
                         <div className="space-y-3 mb-6">
                             <button
                                 onClick={() => signIn("google")}
@@ -230,7 +226,6 @@ export default function LoginPage() {
                             </button> */}
                         </div>
 
-                        {/* Divider */}
                         <div className="relative mb-6">
                             <div className="absolute inset-0 flex items-center">
                                 <div className="w-full border-t border-slate-800/60"></div>
@@ -242,7 +237,6 @@ export default function LoginPage() {
                             </div>
                         </div>
 
-                        {/* Credentials Form */}
                         <form
                             onSubmit={handleCredentialsLogin}
                             className="space-y-4"

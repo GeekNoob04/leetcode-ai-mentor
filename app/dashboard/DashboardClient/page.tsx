@@ -117,7 +117,6 @@ export default function DashboardClient() {
 
     return (
         <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6 pb-8 sm:pb-12 px-3 sm:px-4 md:px-6 lg:px-8">
-            {/* AI Mentor Feedback Section */}
             <div className="bg-gradient-to-b from-slate-900/80 to-slate-900 border border-slate-800/60 rounded-xl sm:rounded-2xl shadow-md overflow-hidden transition-all duration-200 hover:shadow-lg">
                 <button
                     onClick={() => {
@@ -171,7 +170,6 @@ export default function DashboardClient() {
                 )}
             </div>
 
-            {/* Header Section */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 pt-1 sm:pt-2">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-100 tracking-tight">
@@ -192,7 +190,6 @@ export default function DashboardClient() {
                 </div>
             </div>
 
-            {/* Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
                 <div className="bg-slate-900/70 border border-slate-800/60 rounded-lg sm:rounded-xl p-3 sm:p-5 transition-transform duration-200 transform hover:scale-105 hover:shadow-lg">
                     <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1 sm:mb-2">
@@ -246,7 +243,6 @@ export default function DashboardClient() {
                 </div>
             </div>
 
-            {/* Progress Chart */}
             <div className="bg-slate-900/70 border border-slate-800/60 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
                 <h2 className="text-base sm:text-lg font-semibold text-slate-100 mb-4 sm:mb-5">
                     Progress Timeline
@@ -394,7 +390,6 @@ export default function DashboardClient() {
                 </div>
             </div>
 
-            {/* Contest Stats */}
             {contest && (
                 <div className="bg-slate-900/70 border border-slate-800/60 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
                     <h2 className="text-base sm:text-lg font-semibold text-slate-100 mb-4 sm:mb-5">
@@ -439,7 +434,6 @@ export default function DashboardClient() {
                 </div>
             )}
 
-            {/* Topic Distribution */}
             {topics.length > 0 && (
                 <div className="bg-slate-900/70 border border-slate-800/60 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
                     <h2 className="text-base sm:text-lg font-semibold text-slate-100 mb-4 sm:mb-5">
@@ -463,7 +457,6 @@ export default function DashboardClient() {
                 </div>
             )}
 
-            {/* Problem Distribution Chart */}
             <ProblemDistributionChart
                 easy={stats.easySolved}
                 medium={stats.mediumSolved}
