@@ -15,7 +15,6 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (session?.user) {
-            // Check if user has linked their LeetCode username
             if (session.user.leetcodeUsername) {
                 router.push("/dashboard");
             } else {
@@ -213,7 +212,7 @@ export default function LoginPage() {
                                     Continue with Google
                                 </span>
                             </button>
-
+                            {/* 
                             <button
                                 onClick={() => signIn("github")}
                                 className="w-full flex items-center justify-center gap-3 px-4 sm:px-6 py-3 bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-slate-600 rounded-xl transition-all duration-200 text-slate-100 font-medium shadow-sm text-sm sm:text-base cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
@@ -228,7 +227,7 @@ export default function LoginPage() {
                                 <span className="truncate">
                                     Continue with GitHub
                                 </span>
-                            </button>
+                            </button> */}
                         </div>
 
                         {/* Divider */}
