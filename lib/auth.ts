@@ -5,6 +5,7 @@ import { AuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "./prisma";
 import bcrypt from "bcryptjs";
+import { credentialsSchema } from "./validation";
 
 export const NEXT_AUTH: AuthOptions = {
     adapter: PrismaAdapter(prisma),
@@ -22,6 +23,15 @@ export const NEXT_AUTH: AuthOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
+                const parsed = credentialsSchema.safeParse(credentials);
+                if (!parsed.success) {
+                    console.error(
+                        "Zod validation failed:",
+                        parsed.error.issues
+                    );
+                    return null;
+                }
+                const { username, password, name } = parsed.data;
                 if (!credentials?.username || !credentials?.password) {
                     return null;
                 }
