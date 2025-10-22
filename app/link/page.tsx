@@ -1,13 +1,27 @@
 "use client";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function LinkPage() {
+    const { status } = useSession();
     const [username, setUsername] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/login");
+        }
+    }, [status, router]);
+    if (status === "loading") {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <p>Checking authentication...</p>
+            </div>
+        );
+    }
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
