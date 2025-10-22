@@ -13,7 +13,7 @@ import {
     XAxis,
     YAxis,
 } from "recharts";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Code2 } from "lucide-react";
 
 interface Stats {
     username: string;
@@ -95,162 +95,269 @@ export default function DashboardClient() {
         }
     };
 
-    if (loading) return <p>Loading...</p>;
-    if (!stats) return <p>No stats available.</p>;
+    if (loading)
+        return (
+            <div className="flex items-center justify-center min-h-screen px-4">
+                <div className="text-center">
+                    <div className="w-12 h-12 border-2 border-slate-700 border-t-slate-300 rounded-full animate-spin mx-auto mb-4" />
+                    <p className="text-sm font-medium text-slate-400">
+                        Loading dashboard...
+                    </p>
+                </div>
+            </div>
+        );
+    if (!stats)
+        return (
+            <div className="flex items-center justify-center min-h-screen px-4">
+                <p className="text-sm font-medium text-slate-400">
+                    No stats available.
+                </p>
+            </div>
+        );
 
     return (
-        <div className="space-y-8">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-2xl shadow-md">
+        <div className="max-w-7xl mx-auto space-y-6 pb-12 px-4 sm:px-6 lg:px-8">
+            {/* AI Mentor Feedback Section */}
+            <div className="bg-gradient-to-b from-slate-900/80 to-slate-900 border border-slate-800/60 rounded-2xl shadow-md overflow-hidden transition-all duration-200 hover:shadow-lg">
                 <button
                     onClick={() => {
                         setShowFeedback(!showFeedback);
                         if (!showFeedback) fetchAiFeedback();
                     }}
-                    className="flex items-center justify-between w-full text-left"
+                    aria-expanded={showFeedback}
+                    className="flex items-center justify-between w-full text-left px-6 py-4 gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 transition-colors duration-200 hover:bg-slate-800/50"
                 >
-                    <h2 className="text-xl font-semibold mb-3 text-gray-900">
-                        AI Mentor Feedback 🤖
-                    </h2>
-                    {showFeedback ? <ChevronUp /> : <ChevronDown />}
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-rose-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm ring-1 ring-slate-800">
+                            <Code2
+                                className="w-5 h-5 text-white"
+                                strokeWidth={2.5}
+                            />
+                        </div>
+                        <div>
+                            <h2 className="text-base font-semibold text-slate-100 leading-tight">
+                                AI Mentor Insights
+                            </h2>
+                            <p className="text-xs text-slate-400 mt-0.5">
+                                Smart suggestions tailored to your progress
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="text-slate-400 transition-transform duration-200 cursor-pointer">
+                        {showFeedback ? (
+                            <ChevronUp size={20} />
+                        ) : (
+                            <ChevronDown size={20} />
+                        )}
+                    </div>
                 </button>
 
                 {showFeedback && (
-                    <div className="mt-4">
+                    <div className="px-6 pb-5 border-t border-slate-800/60 bg-slate-900/60">
                         {aiLoading ? (
-                            <p className="text-gray-500 italic">
-                                Generating feedback...
-                            </p>
+                            <div className="flex items-center gap-3 text-slate-400 text-sm py-4">
+                                <div className="w-4 h-4 border-2 border-slate-600 border-t-slate-300 rounded-full animate-spin" />
+                                <p>Analyzing your progress...</p>
+                            </div>
                         ) : (
-                            <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
-                                {aiFeedback}
-                            </p>
+                            <div className="py-4">
+                                <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">
+                                    {aiFeedback}
+                                </p>
+                            </div>
                         )}
                     </div>
                 )}
             </div>
 
-            <h1 className="text-3xl font-bold text-white">
-                Leetcode Dashboard
-            </h1>
-
-            <div className="flex items-center space-x-3 bg-white rounded-lg shadow px-4 py-2 w-fit">
-                <span className="text-lg font-semibold text-gray-500">
-                    Username:
-                </span>
-                <span className="text-2xl font-bold text-indigo-700">
-                    {stats.username}
-                </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-neutral-100 rounded-xl shadow p-6">
-                    <p className="text-gray-500">Total Solved</p>
-                    <p className="text-3xl font-bold">{stats.totalSolved}</p>
-                </div>
-                <div className="bg-green-100 rounded-xl shadow p-6">
-                    <p className="text-gray-700">Easy Solved</p>
-                    <p className="text-2xl font-bold">{stats.easySolved}</p>
-                </div>
-                <div className="bg-yellow-100 rounded-xl shadow p-6">
-                    <p className="text-gray-700">Medium Solved</p>
-                    <p className="text-2xl font-bold">{stats.mediumSolved}</p>
-                </div>
-                <div className="bg-red-100 rounded-xl shadow p-6">
-                    <p className="text-gray-700">Hard Solved</p>
-                    <p className="text-2xl font-bold">{stats.hardSolved}</p>
-                </div>
-                <div className="bg-blue-100 rounded-xl shadow p-6">
-                    <p className="text-gray-700">Ranking</p>
-                    <p className="text-3xl font-bold">
-                        #{stats.ranking ?? "N/A"}
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-2">
+                <div>
+                    <h1 className="text-3xl font-extrabold text-slate-100 tracking-tight">
+                        Performance Dashboard
+                    </h1>
+                    <p className="text-sm text-slate-400 mt-1">
+                        Track your coding journey
                     </p>
                 </div>
-                <div className="bg-purple-100 rounded-xl shadow p-6">
-                    <p className="text-gray-700">Contest Rating</p>
-                    <p className="text-2xl font-bold">
+
+                <div className="inline-flex items-center gap-3 bg-slate-900/70 border border-slate-800 rounded-full px-4 py-2.5 transition transform hover:scale-[1.01] hover:border-slate-700 focus-within:ring-2 focus-within:ring-violet-400">
+                    <span className="text-xs font-medium text-slate-500">
+                        @
+                    </span>
+                    <span className="text-sm font-semibold text-slate-100 truncate max-w-[12rem]">
+                        {stats.username}
+                    </span>
+                </div>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div className="bg-slate-900/70 border border-slate-800/60 rounded-xl p-5 transition-transform duration-200 transform hover:scale-105 hover:shadow-lg">
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">
+                        Total
+                    </p>
+                    <p className="text-3xl font-bold text-slate-100">
+                        {stats.totalSolved}
+                    </p>
+                </div>
+                <div className="bg-gradient-to-r from-slate-900/60 to-slate-900/40 border-l-4 border-emerald-500 rounded-xl p-5 transition-transform duration-200 transform hover:scale-105 hover:shadow-lg group">
+                    <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2 group-hover:text-emerald-300 transition-colors duration-200">
+                        Easy
+                    </p>
+                    <p className="text-3xl font-bold text-emerald-400">
+                        {stats.easySolved}
+                    </p>
+                </div>
+                <div className="bg-gradient-to-r from-slate-900/60 to-slate-900/40 border-l-4 border-amber-400 rounded-xl p-5 transition-transform duration-200 transform hover:scale-105 hover:shadow-lg group">
+                    <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2 group-hover:text-amber-300 transition-colors duration-200">
+                        Medium
+                    </p>
+                    <p className="text-3xl font-bold text-amber-400">
+                        {stats.mediumSolved}
+                    </p>
+                </div>
+                <div className="bg-gradient-to-r from-slate-900/60 to-slate-900/40 border-l-4 border-rose-500 rounded-xl p-5 transition-transform duration-200 transform hover:scale-105 hover:shadow-lg group">
+                    <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2 group-hover:text-rose-300 transition-colors duration-200">
+                        Hard
+                    </p>
+                    <p className="text-3xl font-bold text-rose-400">
+                        {stats.hardSolved}
+                    </p>
+                </div>
+                <div className="bg-slate-900/70 border border-slate-800/60 rounded-xl p-5 transition-transform duration-200 transform hover:scale-105 hover:shadow-lg">
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">
+                        Ranking
+                    </p>
+                    <p className="text-3xl font-bold text-slate-100">
+                        {stats.ranking
+                            ? `#${stats.ranking.toLocaleString()}`
+                            : "N/A"}
+                    </p>
+                </div>
+                <div className="bg-slate-900/70 border border-slate-800/60 rounded-xl p-5 transition-transform duration-200 transform hover:scale-105 hover:shadow-lg">
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">
+                        Rating
+                    </p>
+                    <p className="text-3xl font-bold text-slate-100">
                         {stats.contestRating ?? "N/A"}
                     </p>
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6">
-                <h2 className="text-xl font-semibold mb-4 text-gray-800">
-                    Progress Over Time
+            {/* Progress Chart */}
+            <div className="bg-slate-900/70 border border-slate-800/60 rounded-2xl p-6 shadow-sm">
+                <h2 className="text-lg font-semibold text-slate-100 mb-5">
+                    Progress Timeline
                 </h2>
-                <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={history}>
-                        <CartesianGrid stroke="#eee" />
-                        <XAxis
-                            dataKey="fetchedAt"
-                            tickFormatter={(tick) =>
-                                new Date(tick).toLocaleDateString("en-US", {
-                                    month: "short",
-                                    day: "numeric",
-                                })
-                            }
-                        />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Line
-                            type="monotone"
-                            dataKey="totalSolved"
-                            stroke="#2563eb"
-                            strokeWidth={2}
-                            name="Total"
-                        />
-                        <Line
-                            type="monotone"
-                            dataKey="easySolved"
-                            stroke="#22c55e"
-                            strokeWidth={2}
-                            name="Easy"
-                        />
-                        <Line
-                            type="monotone"
-                            dataKey="mediumSolved"
-                            stroke="#eab308"
-                            strokeWidth={2}
-                            name="Medium"
-                        />
-                        <Line
-                            type="monotone"
-                            dataKey="hardSolved"
-                            stroke="#ef4444"
-                            strokeWidth={2}
-                            name="Hard"
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
+                <div className="bg-slate-950/40 rounded-lg p-4 backdrop-blur-sm">
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={history}>
+                            <CartesianGrid
+                                strokeDasharray="3 3"
+                                stroke="#1f2937"
+                            />
+                            <XAxis
+                                dataKey="fetchedAt"
+                                tickFormatter={(tick) =>
+                                    new Date(tick).toLocaleDateString("en-US", {
+                                        month: "short",
+                                        day: "numeric",
+                                    })
+                                }
+                                stroke="#64748b"
+                                style={{ fontSize: "12px" }}
+                            />
+                            <YAxis
+                                stroke="#64748b"
+                                style={{ fontSize: "12px" }}
+                            />
+                            <Tooltip
+                                contentStyle={{
+                                    backgroundColor: "#0b1220",
+                                    border: "1px solid #334155",
+                                    borderRadius: "0.5rem",
+                                    color: "#f1f5f9",
+                                    fontSize: "12px",
+                                }}
+                            />
+                            <Legend wrapperStyle={{ fontSize: "12px" }} />
+                            <Line
+                                type="monotone"
+                                dataKey="totalSolved"
+                                stroke="#94a3b8"
+                                strokeWidth={2}
+                                name="Total"
+                                dot={false}
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="easySolved"
+                                stroke="#34d399"
+                                strokeWidth={2}
+                                name="Easy"
+                                dot={false}
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="mediumSolved"
+                                stroke="#fbbf24"
+                                strokeWidth={2}
+                                name="Medium"
+                                dot={false}
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="hardSolved"
+                                stroke="#fb7185"
+                                strokeWidth={2}
+                                name="Hard"
+                                dot={false}
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
 
+            {/* Contest Stats */}
             {contest && (
-                <div className="bg-white rounded-xl shadow p-6">
-                    <h2 className="text-xl font-semibold mb-4 text-gray-800">
-                        Contest Stats
+                <div className="bg-slate-900/70 border border-slate-800/60 rounded-2xl p-6 shadow-sm">
+                    <h2 className="text-lg font-semibold text-slate-100 mb-5">
+                        Contest Performance
                     </h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="bg-blue-100 p-4 rounded-lg shadow">
-                            <p className="text-gray-700">Contests Attended</p>
-                            <p className="text-2xl font-bold">
+                        <div className="bg-slate-950/30 p-5 rounded-xl border border-slate-800/60 transition-transform duration-200 transform hover:scale-102 hover:border-slate-700">
+                            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+                                Attended
+                            </p>
+                            <p className="text-2xl font-bold text-slate-100">
                                 {contest.attendedContests}
                             </p>
                         </div>
-                        <div className="bg-purple-100 p-4 rounded-lg shadow">
-                            <p className="text-gray-700">Contest Rating</p>
-                            <p className="text-2xl font-bold">
+                        <div className="bg-slate-950/30 p-5 rounded-xl border border-slate-800/60 transition-transform duration-200 transform hover:scale-102 hover:border-slate-700">
+                            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+                                Rating
+                            </p>
+                            <p className="text-2xl font-bold text-slate-100">
                                 {contest.rating ?? "N/A"}
                             </p>
                         </div>
-                        <div className="bg-green-100 p-4 rounded-lg shadow">
-                            <p className="text-gray-700">Global Rank</p>
-                            <p className="text-2xl font-bold">
-                                {contest.globalRanking ?? "N/A"}
+                        <div className="bg-slate-950/30 p-5 rounded-xl border border-slate-800/60 transition-transform duration-200 transform hover:scale-102 hover:border-slate-700">
+                            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+                                Global Rank
+                            </p>
+                            <p className="text-2xl font-bold text-slate-100">
+                                {contest.globalRanking
+                                    ? `#${contest.globalRanking.toLocaleString()}`
+                                    : "N/A"}
                             </p>
                         </div>
-                        <div className="bg-yellow-100 p-4 rounded-lg shadow">
-                            <p className="text-gray-700">Top %</p>
-                            <p className="text-2xl font-bold">
+                        <div className="bg-slate-950/30 p-5 rounded-xl border border-slate-800/60 transition-transform duration-200 transform hover:scale-102 hover:border-slate-700">
+                            <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+                                Top
+                            </p>
+                            <p className="text-2xl font-bold text-slate-100">
                                 {contest.topPercentage?.toFixed(2)}%
                             </p>
                         </div>
@@ -258,27 +365,31 @@ export default function DashboardClient() {
                 </div>
             )}
 
+            {/* Topic Distribution */}
             {topics.length > 0 && (
-                <div className="bg-white rounded-xl shadow p-6">
-                    <h2 className="text-xl font-semibold mb-4 text-gray-800">
+                <div className="bg-slate-900/70 border border-slate-800/60 rounded-2xl p-6 shadow-sm">
+                    <h2 className="text-lg font-semibold text-slate-100 mb-5">
                         Topic Distribution
                     </h2>
-                    {topics.map((t, index) => (
-                        <div
-                            key={`${t.name}-${index}`}
-                            className="bg-indigo-50 p-4 rounded-lg border border-indigo-100"
-                        >
-                            <p className="text-gray-700 font-medium">
-                                {t.name}
-                            </p>
-                            <p className="text-2xl font-bold text-indigo-600">
-                                {t.solved}
-                            </p>
-                        </div>
-                    ))}
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                        {topics.map((t, index) => (
+                            <div
+                                key={`${t.name}-${index}`}
+                                className="bg-slate-950/30 p-4 rounded-xl border border-slate-800/60 transition-transform duration-200 transform hover:scale-102 hover:border-slate-700"
+                            >
+                                <p className="text-xs font-medium text-slate-400 mb-1 truncate">
+                                    {t.name}
+                                </p>
+                                <p className="text-xl font-bold text-slate-100">
+                                    {t.solved}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             )}
 
+            {/* Problem Distribution Chart */}
             <ProblemDistributionChart
                 easy={stats.easySolved}
                 medium={stats.mediumSolved}

@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 
 export const NEXT_AUTH: AuthOptions = {
     adapter: PrismaAdapter(prisma),
+
     providers: [
         CredentialsProvider({
             name: "Email",
@@ -30,19 +31,13 @@ export const NEXT_AUTH: AuthOptions = {
                 });
 
                 if (user) {
-                    if (!user.password) {
-                        console.log("User exists but has no password");
-                        return null;
-                    }
+                    if (!user.password) return null;
 
                     const isValid = await bcrypt.compare(
                         credentials.password,
                         user.password
                     );
-                    if (!isValid) {
-                        console.log("Invalid password");
-                        return null;
-                    }
+                    if (!isValid) return null;
 
                     return {
                         id: user.id,
@@ -70,8 +65,7 @@ export const NEXT_AUTH: AuthOptions = {
                             email: user.email,
                             image: null,
                         };
-                    } catch (e) {
-                        console.error("Error creating user:", e);
+                    } catch {
                         return null;
                     }
                 }
@@ -98,6 +92,7 @@ export const NEXT_AUTH: AuthOptions = {
             }
             return token;
         },
+
         async session({ session, token }) {
             if (!token?.id) return session;
 
@@ -118,18 +113,45 @@ export const NEXT_AUTH: AuthOptions = {
         },
 
         async redirect({ url, baseUrl }) {
-            // If logging out (signOut was called with callbackUrl)
-            if (url.includes("/login")) {
-                return url;
-            }
-
-            // If signing in, redirect to /link
-            if (url.startsWith(baseUrl)) {
-                return `${baseUrl}/link`;
-            }
-
-            // Default to /link for sign in
+            if (url.includes("/login")) return url;
+            if (url.startsWith(baseUrl)) return `${baseUrl}/link`;
             return `${baseUrl}/link`;
+        },
+
+        async signIn({ user, account }) {
+            if (
+                account?.provider === "google" ||
+                account?.provider === "github"
+            ) {
+                const existingUser = await prisma.user.findUnique({
+                    where: { email: user.email! },
+                });
+
+                if (existingUser) {
+                    const existingAccount = await prisma.account.findFirst({
+                        where: {
+                            provider: account.provider,
+                            providerAccountId: account.providerAccountId,
+                        },
+                    });
+
+                    if (!existingAccount) {
+                        await prisma.account.create({
+                            data: {
+                                userId: existingUser.id,
+                                provider: account.provider,
+                                type: account.type,
+                                providerAccountId: account.providerAccountId,
+                                access_token: account.access_token,
+                                token_type: account.token_type,
+                                scope: account.scope,
+                                id_token: account.id_token,
+                            },
+                        });
+                    }
+                }
+            }
+            return true;
         },
     },
 
