@@ -10,18 +10,26 @@ export default function LinkPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+
     useEffect(() => {
         if (status === "unauthenticated") {
             router.push("/login");
         }
     }, [status, router]);
+
     if (status === "loading") {
         return (
-            <div className="flex justify-center items-center h-screen">
-                <p>Checking authentication...</p>
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+                <div className="text-center">
+                    <div className="w-12 h-12 border-2 border-slate-700 border-t-slate-400 rounded-full animate-spin mx-auto mb-4" />
+                    <p className="text-sm font-medium text-slate-400">
+                        Verifying authentication...
+                    </p>
+                </div>
             </div>
         );
     }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -35,38 +43,84 @@ export default function LinkPage() {
             }
         } catch (err) {
             console.log(err);
-            setError("Failed to link username");
+            setError(
+                "Failed to link username. Please verify your LeetCode username and try again."
+            );
         } finally {
             setLoading(false);
         }
     };
+
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
-            <div className="bg-white shadow-md rounded-xl p-6 w-96">
-                <h1 className="text-2xl font-bold text-center mb-4">
-                    Link Your LeetCode Username
-                </h1>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Enter your LeetCode username"
-                        className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    {error && (
-                        <p className="text-red-500 text-sm text-center">
-                            {error}
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 px-4">
+            <div className="w-full max-w-lg">
+                {/* Header */}
+                <div className="text-center mb-10">
+                    <h1 className="text-4xl font-bold text-slate-100 mb-3 tracking-tight">
+                        Connect LeetCode Account
+                    </h1>
+                    <p className="text-slate-400">
+                        Link your profile to unlock personalized analytics and
+                        AI insights
+                    </p>
+                </div>
+
+                {/* Main Card */}
+                <div className="bg-slate-900/70 border border-slate-800/60 rounded-2xl shadow-xl p-8">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div>
+                            <label
+                                htmlFor="leetcode-username"
+                                className="block text-sm font-medium text-slate-300 mb-3"
+                            >
+                                LeetCode Username
+                            </label>
+                            <input
+                                id="leetcode-username"
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder="Enter your LeetCode username"
+                                className="w-full px-4 py-3.5 bg-slate-950/40 border border-slate-700/60 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all duration-200 text-base"
+                                required
+                                disabled={loading}
+                            />
+                        </div>
+
+                        {error && (
+                            <div className="bg-red-900/20 border border-red-800/50 rounded-lg px-4 py-3">
+                                <p className="text-red-400 text-sm">{error}</p>
+                            </div>
+                        )}
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white py-3.5 rounded-lg transition-all duration-200 font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                        >
+                            {loading ? (
+                                <span className="flex items-center justify-center gap-2">
+                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                    Connecting...
+                                </span>
+                            ) : (
+                                "Continue"
+                            )}
+                        </button>
+                    </form>
+
+                    {/* Help Text */}
+                    <div className="mt-6 pt-6 border-t border-slate-800/60">
+                        <p className="text-xs text-slate-500 text-center leading-relaxed">
+                            You can find your username in your LeetCode profile
+                            URL:
+                            <br />
+                            <span className="text-slate-400 font-mono">
+                                leetcode.com/u/your-username
+                            </span>
                         </p>
-                    )}
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition"
-                    >
-                        {loading ? "Linking..." : "Link Username"}
-                    </button>
-                </form>
+                    </div>
+                </div>
             </div>
         </div>
     );
