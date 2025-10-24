@@ -50,11 +50,14 @@ REPORT STRUCTURE:
 OUTPUT RULES:
 - Every sentence must deliver insight or specific action
 - Be blunt about weaknesses—no sugar coating
-- Use plain text with simple formatting (hyphens for lists)
+- Use ONLY plain text with simple hyphens for lists
+- NO markdown formatting: no asterisks, no bold, no italics, no headers with # or ##
+- Section titles should be followed by a colon and continue on the same line or next line
 - Cut all generic advice—everything must be data-informed
 - No repetition of input metrics without interpretation
 - If data is limited, state it briefly and infer logically
 - Detailed but dense—no unnecessary explanations
+- Format output as plain text paragraphs and simple bulleted lists only
 
 Generate the complete report.
 `;
